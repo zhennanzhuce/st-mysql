@@ -1,0 +1,39 @@
+/*!
+ * speedt-mysql
+ * Copyright(c) 2014 speedt <13837186852@qq.com>
+ * MIT Licensed
+ */
+'use strict';
+
+const mysql = require('mysql');
+
+module.exports = function(opts){
+  return new Method(opts);
+}
+
+var Method = function(opts){
+  var self = this;
+  self.opts = opts || {};
+};
+
+var pro = Method.prototype;
+
+pro.query = function(sql, params, cb){
+  initPool.call(this);
+
+  this.pool.getConnection((err, conn) => {
+    if(err) return cb(err);
+    conn.query(sql, params, (err, docs, fields) => {
+      conn.release();
+      cb(err, docs, fields);
+    });
+  });
+};
+
+const initPool = function(){
+  if(!this.pool) this.pool = mysql.createPool(this.opts);
+};
+
+pro.checkOnly = docs => (!!docs && 1 === docs.length);
+
+pro.format = (sql, params) => mysql.format(sql, params);
