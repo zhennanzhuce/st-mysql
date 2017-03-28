@@ -1,6 +1,6 @@
 {
   "name": "speedt-mysql",
-  "version": "0.1.55",
+  "version": "0.1.61",
   "description": "speedt-mysql",
   "main": "index.js",
   "scripts": {

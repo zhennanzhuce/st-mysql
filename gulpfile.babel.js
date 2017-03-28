@@ -1,6 +1,6 @@
 /*!
- * speedt-mysql
- * Copyright(c) 2014 speedt <13837186852@qq.com>
+ * st-mysql
+ * Copyright(c) 2017 zhennanzhuce
  * MIT Licensed
  */
 'use strict';
@@ -14,14 +14,24 @@ gulp.task("clean", () => {
   return gulp.src("dist/*").pipe(clean({ force: true }));
 });
 
-gulp.task("default", ['copy'], () => {
+gulp.task("default", ['copy1', 'copy2', 'copy3'], () => {
   return gulp.src("src/**/*.js")
              .pipe(babel())
-             .pipe(uglify())
+             .pipe(uglify({ mangle: { toplevel: true } }))
              .pipe(gulp.dest("dist"));
 });
 
-gulp.task("copy", () => {
+gulp.task("copy1", () => {
   return gulp.src("src/package.json")
+             .pipe(gulp.dest("dist"));
+});
+
+gulp.task("copy2", () => {
+  return gulp.src("src/LICENSE")
+             .pipe(gulp.dest("dist"));
+});
+
+gulp.task("copy3", () => {
+  return gulp.src("src/README.md")
              .pipe(gulp.dest("dist"));
 });
