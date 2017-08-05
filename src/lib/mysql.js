@@ -34,6 +34,11 @@ const initPool = function(){
   if(!this.pool) this.pool = mysql.createPool(this.opts);
 };
 
+pro.getPool = function(){
+  initPool.call(this);
+  return this.pool;
+};
+
 pro.checkOnly = docs => (!!docs && 1 === docs.length);
 
 pro.format = (sql, params) => mysql.format(sql, params);
