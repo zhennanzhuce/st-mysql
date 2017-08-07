@@ -1,0 +1,1 @@
+npm install & gulp & cd .\dist & npm publish
