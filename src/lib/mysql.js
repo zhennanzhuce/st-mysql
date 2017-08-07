@@ -19,9 +19,8 @@ var Method = function(opts){
 var pro = Method.prototype;
 
 pro.query = function(sql, params, cb){
-  initPool.call(this);
 
-  this.pool.getConnection((err, conn) => {
+  this.getPool().getConnection((err, conn) => {
     if(err) return cb(err);
     conn.query(sql, params, (err, docs, fields) => {
       conn.release();
