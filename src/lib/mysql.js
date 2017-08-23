@@ -19,7 +19,6 @@ var Method = function(opts){
 var pro = Method.prototype;
 
 pro.query = function(sql, params, cb){
-
   this.getPool().getConnection((err, conn) => {
     if(err) return cb(err);
     conn.query(sql, params, (err, docs, fields) => {
@@ -41,3 +40,26 @@ pro.getPool = function(){
 pro.checkOnly = docs => (!!docs && 1 === docs.length);
 
 pro.format = (sql, params) => mysql.format(sql, params);
+
+pro.beginTransaction = function(){
+  var self = this;
+  return new Promise((resolve, reject) => {
+    self.getPool().getConnection((err, trans) => {
+      if(err) return reject(err);
+
+      trans.beginTransaction(err => {
+        if(err) return reject(err);
+        resolve(trans);
+      });
+    });
+  });
+};
+
+pro.commitTransaction = function(trans){
+  return new Promise((resolve, reject) => {
+    trans.commit(err => {
+      if(err) return reject(err);
+      resolve();
+    });
+  });
+};
